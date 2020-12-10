@@ -1,6 +1,7 @@
 package tson
 
 import (
+	"fmt"
 	"reflect"
 	"sync"
 	"time"
@@ -29,7 +30,9 @@ func (t *Time) UnmarshalJSON(data []byte) error {
 		return nil
 	}
 
-	tm, err := time.Parse(`"`+format.layout+`"`, string(data))
+	layout := fmt.Sprintf(`"%s"`, format.layout)
+
+	tm, err := time.Parse(layout, string(data))
 	t.Time = tm
 	return err
 }
