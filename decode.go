@@ -32,7 +32,7 @@ func Unmarshal(jsonBytes []byte, v interface{}) error {
 func NewStruct(v interface{}) (rt reflect.Type, err error) {
 	rv := reflect.ValueOf(v)
 	if rv.Kind() != reflect.Ptr || rv.IsNil() {
-		err = &json.InvalidUnmarshalError{reflect.TypeOf(v)}
+		err = &json.InvalidUnmarshalError{Type: reflect.TypeOf(v)}
 		return
 	}
 
