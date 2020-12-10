@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/cia-rana/tson"
+	"github.com/go-utils/tson"
 )
 
 type Person struct {
