@@ -41,6 +41,9 @@ func NewStruct(v interface{}) (rt reflect.Type, err error) {
 }
 
 func newStruct(rt reflect.Type) reflect.Type {
+	if rt.Kind() != reflect.Struct {
+		return rt
+	}
 	rs := make([]reflect.StructField, rt.NumField())
 	for i := 0; i < rt.NumField(); i++ {
 		f := rt.Field(i)
