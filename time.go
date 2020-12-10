@@ -15,16 +15,19 @@ var format = struct {
 	new(sync.Mutex),
 }
 
+// SetLayout - set the layout
 func SetLayout(layout string) {
 	format.mutex.Lock()
 	format.layout = layout
 	format.mutex.Unlock()
 }
 
+// Time -  alias for time.Time
 type Time struct {
 	time.Time
 }
 
+// UnmarshalJSON - unmarshal JSON
 func (t *Time) UnmarshalJSON(data []byte) error {
 	if string(data) == "null" {
 		return nil
