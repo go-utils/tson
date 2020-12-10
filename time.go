@@ -29,7 +29,8 @@ type Time struct {
 
 // UnmarshalJSON - unmarshal JSON
 func (t *Time) UnmarshalJSON(data []byte) error {
-	if string(data) == "null" {
+	if string(data) == "null" || len(data) == 0 {
+		t.Time = time.Time{}
 		return nil
 	}
 
