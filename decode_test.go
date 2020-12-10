@@ -1,12 +1,17 @@
 package tson
 
 import (
+	"reflect"
 	"testing"
 	"time"
 )
 
+type String string
+
 type Foo struct {
-	T *time.Time
+	T       *time.Time
+	Strings []String
+	Ints    []int
 }
 
 func TestUnmarshal(t *testing.T) {
@@ -17,13 +22,19 @@ func TestUnmarshal(t *testing.T) {
 	tests := []struct {
 		name    string
 		args    args
+		wantFoo Foo
 		wantErr bool
 	}{
 		{
 			name: "null",
 			args: args{
-				jsonBytes: []byte(`{"T": null}`),
+				jsonBytes: []byte(`{"T": null, "Strings": ["a", "b"], "Ints": [1, 2, 3]}`),
 				expected:  nil,
+			},
+			wantFoo: Foo{
+				T:       nil,
+				Strings: []String{"a", "b"},
+				Ints:    []int{1, 2, 3},
 			},
 		},
 		{
@@ -40,6 +51,18 @@ func TestUnmarshal(t *testing.T) {
 
 			if err := Unmarshal(tt.args.jsonBytes, &v); (err != nil) != tt.wantErr {
 				t.Errorf("Unmarshal() error = %v, wantErr %v", err, tt.wantErr)
+			}
+
+			if tt.wantFoo.T != v.T {
+				t.Fatalf("expected = %v, actual = %v", tt.wantFoo.T, v.T)
+			}
+
+			if !reflect.DeepEqual(tt.wantFoo.Strings, v.Strings) {
+				t.Fatalf("expected = %v, actual = %v", tt.wantFoo.Strings, v.Strings)
+			}
+
+			if !reflect.DeepEqual(tt.wantFoo.Ints, v.Ints) {
+				t.Fatalf("expected = %v, actual = %v", tt.wantFoo.Ints, v.Ints)
 			}
 
 			if v.T == nil {
